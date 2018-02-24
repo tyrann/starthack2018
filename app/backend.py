@@ -65,7 +65,7 @@ def get_tours():
                 'max_travel_time': max_travel_time,
                 'query': query
             }}), 401
-    max_travel_time = int(max_travel_time)
+    max_travel_time = int(max_travel_time[:-1])
     #queries =request.form.getlist('query')
     #print(queries)
     #query_language = request.args.get('max_travel_time') #could be detected

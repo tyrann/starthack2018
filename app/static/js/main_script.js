@@ -152,7 +152,16 @@ function update_graph() {
 
 
 // Ion Slider
-$("#duration_slider").ionRangeSlider();
+$("#duration_slider").ionRangeSlider({
+    grid: true,
+    from: 3,
+    values: [
+        "1d", "2d", "3d",
+        "4d", "5d", "6d",
+        "7d", "8d", "9d",
+        "10d", "11d", "12d"
+    ]
+});
 
 // Form submission
 const TOUR_API_URL = 'http://127.0.0.1:5000/api/v1.0/tours?'
