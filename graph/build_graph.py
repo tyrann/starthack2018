@@ -3,8 +3,9 @@ from itertools import combinations
 import matplotlib.pyplot as plt
 from sbb_api import _api_request_from_to
 import pickle
+import copy
 
-cities_score=[('Lausanne',{'score':14}),('Genève',{'score':5}),('Zurich',{'score':13}),('Lucerne',{'score':19}),('Locarno',{'score':19}),('Montreux',{'score':3})]
+cities_score=[('Lausanne',{'score':14}),('Genève',{'score':5}),('Zurich',{'score':13}),('Lucerne',{'score':19}),('Locarno',{'score':19}),('Montreux',{'score':12})]
 
 distance='distance'
 score='score'
@@ -75,6 +76,18 @@ def nearest_neighbors(source,G):
             run = False
     return (visited, sum_duration)
 
+def update_score_with_closeness(G, cities_score):
+    for item in G.nodes(data=True):
+        city = cities_score[cities_score.index(item)]
+        closeness = nx.closeness_centrality(G,item[0],distance=distance)
+        item[1]['score'] *= closeness
+        city[1]['score'] *= closeness
+        print("city " + item[0] + " has closeness value "+str(closeness))
+         
+    pass
+
+
+
 def get_path(cities_score, threshold):
     #Load the dic for distances
     global distance_dic
@@ -94,7 +107,7 @@ def get_path(cities_score, threshold):
     #We cannot remove the source from the list of visiting node
     whitelist = []
     whitelist.append(source)
-    whitelist.append(destination)
+    #whitelist.append(destination)
 
     while(duration > threshold):
         #try and remove the least interesting city from the graph
@@ -106,8 +119,10 @@ def get_path(cities_score, threshold):
 
         print("duration is " + str(duration))
 
-        #modify the graph by removeing the city with the lowest score
+        #modify the graph by removing the city with the lowest score
+        update_score_with_closeness(G,cities_score)
         sorted_cities = (sorted(cities_score, key=lambda x: x[1]['score']))
+        print(sorted_cities)
         for item in sorted_cities:
             if item[0] not in whitelist:
                 print("Removing city " + item[0] + " from graph")
