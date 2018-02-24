@@ -15,39 +15,47 @@
   </head>
 
   <body>
-
-    <div class="container">
+    <div class="container" id="main_container">
       <div class="row">
         <div class="col-4">
           <h4>Plan a trip</h4>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="from_addon">From</span>
+          <form>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="from_addon">From</span>
+              </div>
+              <input type="text" class="form-control" placeholder="City of departure" aria-label="City of departure" aria-describedby="from_addon">
             </div>
-            <input type="text" class="form-control" placeholder="City of departure" aria-label="City of departure" aria-describedby="from_addon">
-          </div>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="to_addon">To</span>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="to_addon">To</span>
+              </div>
+              <input type="text" class="form-control" placeholder="City of arrival" aria-label="City of arrival" aria-describedby="to_addon">
             </div>
-            <input type="text" class="form-control" placeholder="City of arrival" aria-label="City of arrival" aria-describedby="to_addon">
-          </div>
+            <div class="form-group">
+              <label for="duration_slider" control-label>Maximum travel duration</label>
+              <input type="text" id="duration_slider" name="duration_slider" value="" />
+            </div>
 
-          <input type="text" id="duration_slider" name="duration_slider" value="" />
+            <div class="form-group">
+              <label for="duration_slider" control-label>Tags of interests</label>
+              <select multiple class="form-control" id="tags_multichoice">
+                <option>arts</option>
+                <option>museum</option>
+                <option>lake</option>
+                <option>mountains</option>
+                <option>chocolate</option>
+                <option>sport</option>
+                <option>culture</option>
+              </select>
+            </div>
 
-          <select multiple class="form-control" id="exampleFormControlSelect2">
-            <option>arts</option>
-            <option>museum</option>
-            <option>lake</option>
-            <option>mountains</option>
-            <option>chocolate</option>
-            <option>sport</option>
-            <option>culture</option>
-          </select>
+            <button type="submit" class="btn btn-danger btn-block">Let's travel!</button>
+          </form>
 
         </div>
         <div class="col-8">
-          <div id="map_container"></div>
+          <div id="map_div"></div>
         </div>
       </div>
     </div>
