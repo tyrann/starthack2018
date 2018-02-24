@@ -26,7 +26,8 @@ full_cities_Set = ['Brig-Glis', 'Davos', 'Basel', 'Disentis/Mustér', 'Zürich',
 
 def write_full_distance_dic():
 
-    #distance_dic = load_obj("distance_map")
+    global distance_dic
+    distance_dic = load_obj("distance_map")
     try :
         pairs = list(combinations(full_cities_Set,2))
         for item in pairs:
@@ -34,11 +35,14 @@ def write_full_distance_dic():
 
         save_obj(distance_dic,"distance_map")
     except:
+        print("Error can't make anymore requests")
         save_obj(distance_dic,"distance_map")
 
 
 def get_distance(city_pair):
+    print("Testing")
     if(city_pair in distance_dic):
+        print("City connection was found in dataset")
         return distance_dic[city_pair]
     distance =_api_request_from_to(city_pair[0],city_pair[1])
     split_dist = distance.split('d')
@@ -157,7 +161,9 @@ def get_path(cities_score, threshold, source, destination):
     return (visited, total_score)
 
 def main():
-   write_full_distance_dic()
+   distance_dic = load_obj("distance_map")
+   print(distance_dic)
+   #write_full_distance_dic()
 
 if __name__ == "__main__":
     main()
