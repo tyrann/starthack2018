@@ -50,11 +50,13 @@ def get_tours():
     """Return a list of possible tours that the user may want to do in Switzerland based on his query"""
     city_from = request.args.get('city_from')
     city_to = request.args.get('city_to') 
-    max_travel_time = int(request.args.get('max_travel_time'))
+    max_travel_time = request.args.get('max_travel_time')
     query = request.args.get('query')
-
+    queries = request.args.getlist('query')
+    if queries:
+        query = ' '.join(queries)
+        print(query)
     if (city_from == None) or (city_to == None) or (max_travel_time ==  None) or (query ==  None):
-        print('djksjfsh')
         return jsonify({"error":"401",
             'message': 'Please provide all argument :',
             'args':{
@@ -63,6 +65,7 @@ def get_tours():
                 'max_travel_time': max_travel_time,
                 'query': query
             }}), 401
+    max_travel_time = int(max_travel_time)
     #queries =request.form.getlist('query')
     #print(queries)
     #query_language = request.args.get('max_travel_time') #could be detected
