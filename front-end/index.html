@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>SBB Multidest</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="static/css/ion.rangeSlider.css">
+    <link rel="stylesheet" type="text/css" href="static/css/ion.rangeSlider.skinFlat.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css"/>
+  </head>
+
+  <body>
+    <div class="container" id="main_container">
+      <div class="row">
+        <div class="col-4">
+          <h4>Plan a trip</h4>
+          <form>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="from_addon">From</span>
+              </div>
+              <input type="text" class="form-control" placeholder="City of departure" aria-label="City of departure" aria-describedby="from_addon">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="to_addon">To</span>
+              </div>
+              <input type="text" class="form-control" placeholder="City of arrival" aria-label="City of arrival" aria-describedby="to_addon">
+            </div>
+            <div class="form-group">
+              <label for="duration_slider" control-label>Maximum travel duration</label>
+              <input type="text" id="duration_slider" name="duration_slider" value="" />
+            </div>
+
+            <div class="form-group">
+              <label for="duration_slider" control-label>Tags of interests</label>
+              <select multiple class="form-control" id="tags_multichoice">
+                <option>arts</option>
+                <option>museum</option>
+                <option>lake</option>
+                <option>mountains</option>
+                <option>chocolate</option>
+                <option>sport</option>
+                <option>culture</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-danger btn-block">Let's travel!</button>
+          </form>
+
+        </div>
+        <div class="col-8">
+          <div id="map_div"></div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- SCRIPTS -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.1/js/all.js"></script>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js"></script>
+
+    <script type="text/javascript" src='static/js/ion.rangeSlider.min.js'></script>
+    <script type="text/javascript" src='static/js/main_script.js'></script>
+  </body>
+</html>
