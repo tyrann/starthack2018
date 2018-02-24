@@ -27,12 +27,15 @@ full_cities_Set = ['Brig-Glis', 'Davos', 'Basel', 'Disentis/Mustér', 'Zürich',
 def write_full_distance_dic():
 
     #distance_dic = load_obj("distance_map")
-    
-    pairs = list(combinations(full_cities_Set,2))
-    for item in pairs:
-        get_distance(item)
+    try :
+        pairs = list(combinations(full_cities_Set,2))
+        for item in pairs:
+            get_distance(item)
 
-    save_obj(distance_dic,"distance_map")
+        save_obj(distance_dic,"distance_map")
+    except:
+        save_obj(distance_dic,"distance_map")
+
 
 def get_distance(city_pair):
     if(city_pair in distance_dic):
@@ -154,9 +157,7 @@ def get_path(cities_score, threshold, source, destination):
     return (visited,score)
 
 def main():
-   write_full_distance_dic() 
+   write_full_distance_dic()
 
 if __name__ == "__main__":
     main()
-
-
