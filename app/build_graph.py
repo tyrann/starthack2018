@@ -161,9 +161,7 @@ def get_path(cities_score, threshold, source, destination):
     return (visited, total_score)
 
 def main():
-   distance_dic = load_obj("distance_map")
-   print(distance_dic)
-   #write_full_distance_dic()
+   write_full_distance_dic()
 
 if __name__ == "__main__":
     main()
