@@ -151,7 +151,7 @@ def get_path(cities_score, threshold, source, destination):
     visited.append(destination)
     print("Path is " + str(visited) + " with a score of " + str(total_score))
 
-    return (visited,score)
+    return (visited, total_score)
 
 def main():
    write_full_distance_dic() 
