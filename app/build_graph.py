@@ -14,6 +14,26 @@ score='score'
 
 distance_dic = {}
 
+full_cities_Set = ['Brig-Glis', 'Davos', 'Basel', 'Disentis/Mustér', 'Zürich', 'Lucerne', 'Zermatt',
+               'Zweisimmen', 'Flüelen', 'Lugano', 'St. Moritz', 'Montreux', 'Engelberg', 'Gstaad',
+               'Chur', 'Geneva', 'Locarno', 'Stechelberg (Schilthornbahn)', 'Schaffhausen', 'Andermatt',
+               'Berne', 'Lauterbrunnen', 'Wattwil', 'Lausanne', 'Nyon', 'Fribourg', 'Gruyeres', 'St gallen',
+               'Solothurn', 'Interlaken', 'Belinzona', 'Zug', 'Vevey', 'Thun', 'La chaux-de-fonds', 'Neuchatel',
+               'Arolla', 'Arosa', 'Bienne', 'Sion, Switzerland', 'Altdorf (UR)', 'Delemont', 'Frauenfeld', 'Langenthal',
+               'le Locle', 'Liestal', 'Martigny', 'Olten', 'Schwyz', 'Stans', 'Val-de-Travers', 'Wil',
+               'Yverdon-les-bains', 'Meyrin']
+
+
+def write_full_distance_dic():
+
+    #distance_dic = load_obj("distance_map")
+    
+    pairs = list(combinations(full_cities_Set,2))
+    for item in pairs:
+        get_distance(item)
+
+    save_obj(distance_dic,"distance_map")
+
 def get_distance(city_pair):
     if(city_pair in distance_dic):
         return distance_dic[city_pair]
@@ -62,7 +82,7 @@ def get_closest_city(cities_dict, visited):
 
 def nearest_neighbors(source,G):
     #returns nearest neighbors approximation and total duration of such path
-sum_duration = 0
+    sum_duration = 0
     run = True
     visited = []
     visited.append(source)
@@ -85,7 +105,6 @@ def update_score_with_closeness(G, cities_score):
         city[1]['score'] *= closeness
          
     pass
-
 
 
 def get_path(cities_score, threshold, source, destination):
@@ -133,3 +152,11 @@ def get_path(cities_score, threshold, source, destination):
     print("Path is " + str(visited) + " with a score of " + str(total_score))
 
     return (visited,score)
+
+def main():
+   write_full_distance_dic() 
+
+if __name__ == "__main__":
+    main()
+
+
