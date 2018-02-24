@@ -49,7 +49,7 @@ def front_end():
 def get_tours():
     """Return a list of possible tours that the user may want to do in Switzerland based on his query"""
     city_from = request.args.get('city_from')
-    city_to = request.args.get('city_to') 
+    city_to = request.args.get('city_to')
     max_travel_time = request.args.get('max_travel_time')
     query = request.args.get('query')
     queries = request.args.getlist('query')
