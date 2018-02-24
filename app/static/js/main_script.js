@@ -13,15 +13,14 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 $("#duration_slider").ionRangeSlider();
 
 // Form submission
-const TOUR_API_URL = 'http://127.0.0.1:5000/api/v1.0/tours_test?'
+const TOUR_API_URL = 'http://127.0.0.1:5000/api/v1.0/tours?'
 
 $('#left_panel_form').on( "submit", function( event ) {
     event.preventDefault();
     let params = $( this ).serialize();
 
-    console.log(TOUR_API_URL + params);
-
-    jQuery.getJSON(TOUR_API_URL + params, function(json) {
-      alert("Success");
+    $.get(TOUR_API_URL + params, function(json) {
+        console.log(json);
+        alert("Success");
     });
 });
