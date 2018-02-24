@@ -22,10 +22,42 @@ def query_augmentation(queries):
     aug = queries.copy()
     if 'arts' in queries:
         aug.append('art')
+        aug.append('artist')
+        aug.append('exhibition')
+        aug.append('performance')
+        aug.append('artistic')
     if 'mountains' in queries:
         aug.append('mountain')
+        aug.append('alpes')
+        aug.append('jura')
     if 'museum' in queries:
         aug.append('museums')
+        aug.append('gallery')
+    if 'chocolate' in queries:
+        aug.append('frey')
+        aug.append('toblorone')
+    if 'science' in queries:
+        aug.append('EPFL')
+        aug.append('innovation')
+        aug.append('CERN')
+        aug.append('physics')
+    if 'economie' in queries:
+        aug.append('finance')
+        aug.append('business')
+    if 'clubbing' in queries:
+        aug.append('club')
+        aug.append('bar')
+        aug.append('night life')
+        aug.append('clubs')
+    if 'wellness' in queries:
+        aug.append('termal')
+        aug.append('springs')
+    if 'music' in queries:
+        aug.append('festival')
+        aug.append('festivals')
+    if 'sport' in queries:
+        aug.append('sport')
+
     return aug
 
 def train_tf_idf():
