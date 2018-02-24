@@ -129,6 +129,7 @@ def get_path(cities_score, threshold, source, destination):
                 break
     total_score = sum(city[1]['score'] for city in cities_score_normal if city[0] in visited)
         
-
+    visited.append(destination)
     print("Path is " + str(visited) + " with a score of " + str(total_score))
+
     return (visited,score)
