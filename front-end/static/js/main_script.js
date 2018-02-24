@@ -1,5 +1,5 @@
 // Leaflet initialization
-let mymap = L.map('map_container').setView([46.879, 9.2], 8);
+let mymap = L.map('map_div').setView([46.879, 9.2], 8);
 
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
