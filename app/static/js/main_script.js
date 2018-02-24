@@ -69,7 +69,8 @@ let cities = [
   new city('Val-de-Travers', 46.911697, 6.610216),
   new city('Wil', 47.4757171459,	9.0517500503),
   new city('Yverdon-les-bains', 46.781524, 6.40753),
-  new city('Meyrin', 46.22561, 6.077305)
+  new city('Meyrin', 46.22561, 6.077305),
+  new city('Basel', 47.547667, 7.589539)
 ]
 
 let train_path_data;
