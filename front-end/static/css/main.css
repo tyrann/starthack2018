@@ -1,9 +1,18 @@
+body {
+
+}
+
 #main_container {
     width: 100vw;
+    height: 100vh;
     max-width: none;
 }
 
 #map_div {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
+}
+
+#tags_multichoice {
+    height: 100%;
 }
