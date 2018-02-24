@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 from flask import Flask, jsonify, request
+
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics.pairwise import cosine_similarity
 import pickle
+from build_graph import get_path
+
 
 app = Flask(__name__)
 
@@ -37,26 +40,40 @@ def predict(query):
     indexes = np.argsort(vals)[-10:][::-1]
     return zip(labels[indexes], vals[indexes])
 
-def construct_grah():
-    return G 
-
-def find_path(G, city_start, city_end, city_impotrance):
-    return path
-
 @app.route('/api/v1.0/tours', methods=['GET'])
 def get_tours():
     """Return a list of possible tours that the user may want to do in Switzerland based on his query"""
     city_from = request.args.get('city_from')
-    city_to = request.args.get('city_to')
-    max_travel_time = request.args.get('max_travel_time')
+    city_to = request.args.get('city_to') 
+    max_travel_time = int(request.args.get('max_travel_time'))
     query = request.args.get('query')
+
+    if (city_from == None) or (city_to == None) or (max_travel_time ==  None) or (query ==  None):
+        print('djksjfsh')
+        return jsonify({"error":"401",
+            'message': 'Please provide all argument :',
+            'args':{
+                'city_from': city_from,
+                'city_to': city_to,
+                'max_travel_time': max_travel_time,
+                'query': query
+            }}), 401
+    #queries =request.form.getlist('query')
+    #print(queries)
     #query_language = request.args.get('max_travel_time') #could be detected
     
     #Some calls
     pred = predict(query)
+    cities_importance = { i:j for (i,j) in pred if j>0}
+    if city_from not in cities_importance.keys():
+        cities_importance[city_from] = 0
+    #cities_score=[('Lausanne',{'score':14}),('Genève',{'score':5}),('Zurich',{'score':13}),('Lucerne',{'score':19}),('Locarno',{'score':19}),('Montreux',{'score':12})]
+    cities_score = [(k, {'score': cities_importance[k]}) for  k in cities_importance.keys()]
+    path, score = get_path(cities_score, max_travel_time, source=city_from, destination=city_to)
     res = {
-        'cities_importance': { i:j for (i,j) in pred if j>0}, #return the importance of each city (No limits)
-        'tour': []
+        'cities_importance': cities_importance, #return the importance of each city (No limits)
+        'tour': path,
+        'score': score
     }
     return jsonify(res)
 
