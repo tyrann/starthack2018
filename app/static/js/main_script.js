@@ -86,24 +86,32 @@ function getTrain_Path(trainline) {
 d3.csv('static/datasets/train_route.csv', loadTrainPath);
 
 function draw_path(path) {
-  let i = 0
-  myLines = [];
+  let i = 0;
+  clearMap(mymap);
+
   while(i < path.length-1) {
-    //draw_point(path[i])
-    create_line(path[i], path[i+1])
-    i = i + 1
+    draw_marker(get_city_by_name(path[i]));
+    create_line(path[i], path[i+1]);
+    i = i + 1;
   }
-  //draw_point(path[path.length-1])
-  update_graph()
+  draw_marker(get_city_by_name(path[path.length-1]));
+  update_graph();
 }
 
 function draw_point(city) {
-    var circle = L.circle([city.long, city.lat], {
+    var circle = L.circle([city.lat, city.long], {
         color: 'red',
         fillColor: '#f03',
         fillOpacity: 0.7,
-        radius: 50
+        radius: 500,
     }).addTo(mymap);
+}
+
+function draw_marker(city) {
+    let marker = L.marker([city.lat, city.long]);
+    mymap.addLayer(marker);
+    marker.bindPopup(city.name);
+    myMarkers.push(marker);
 }
 
 function find_by_name(city, name) {
@@ -116,7 +124,8 @@ function get_city_by_name(name) {
   return cities.find(x => find_by_name(x, name));
 }
 
-var myLines = []
+let myLines = [];
+let myMarkers = [];
 
 function create_line(city_name_1, city_name_2) {
   city1 = get_city_by_name(city_name_1);
@@ -127,38 +136,6 @@ function create_line(city_name_1, city_name_2) {
   });
 }
 
-/*
-var myLines = [{'coordinates': [[6.39970400408, 46.4757395273],
-   [6.42713908598, 46.4751599503]],
-  'type': 'LineString'},
- {'coordinates': [[6.54050855527, 46.5291203863],
-   [6.5417981566, 46.5307409033]],
-  'type': 'LineString'},
- {'coordinates': [[6.5417981566, 46.5307409033],
-   [6.5508823384, 46.5347796473]],
-  'type': 'LineString'},
- {'coordinates': [[6.42713908598, 46.4751599503],
-   [6.45590462293, 46.4823041329]],
-  'type': 'LineString'},
- {'coordinates': [[6.42713908598, 46.4751599503],
-   [6.45590462293, 46.4823041329]],
-  'type': 'LineString'},
- {'coordinates': [[6.11552023469, 46.2087560586],
-   [6.12772692721, 46.2055517047]],
-  'type': 'LineString'},
- {'coordinates': [[6.11552023469, 46.2087560586],
-   [6.12772692721, 46.2055517047]],
-  'type': 'LineString'},
- {'coordinates': [[6.14455938175, 46.222435146],
-   [6.14733924476, 46.2423769792]],
-  'type': 'LineString'},
- {'coordinates': [[6.52102415523, 46.5236117496],
-   [6.52434058739, 46.5247990334]],
-  'type': 'LineString'}
-]
-;
-*/
-
 var myStyle = {
     "color": "#ed5565",
     "weight": 5,
@@ -166,6 +143,7 @@ var myStyle = {
 };
 
 function clearMap(m) {
+    myLines = [];
     for(i in m._layers) {
         if(m._layers[i]._path != undefined) {
             try {
@@ -176,11 +154,14 @@ function clearMap(m) {
             }
         }
     }
+
+    myMarkers.forEach(function (m) {
+        mymap.removeLayer(m);
+    });
 }
 
 
 function update_graph() {
-  clearMap(mymap);
   L.geoJSON(myLines, {
       style: myStyle
   }).addTo(mymap);
