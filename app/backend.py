@@ -17,6 +17,17 @@ vectorizer = None
 transformer = None
 labels = []
 
+def query_augmentation(queries):
+    """Take as input a list of key words"""
+    aug = queries.copy()
+    if 'arts' in queries:
+        aug.append('art')
+    if 'mountains' in queries:
+        aug.append('mountain')
+    if 'museum' in queries:
+        aug.append('museums')
+    return aug
+
 def train_tf_idf():
     global X, vectorizer, transformer, labels
     cities_info = pickle.load(open("cities_description.p", "rb"))
@@ -54,6 +65,7 @@ def get_tours():
     query = request.args.get('query')
     queries = request.args.getlist('query')
     if queries:
+        query = query_augmentation(queries)
         query = ' '.join(queries)
         print(query)
     if (city_from == None) or (city_to == None) or (max_travel_time ==  None) or (query ==  None):
