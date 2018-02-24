@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from flask import Flask, jsonify, request
-
 import numpy as np
+import os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -40,6 +40,11 @@ def predict(query):
     indexes = np.argsort(vals)[-10:][::-1]
     return zip(labels[indexes], vals[indexes])
 
+@app.route('/', methods=['GET'])
+def front_end():
+    """Return the front-end app"""
+    return app.send_static_file('index.html')
+
 @app.route('/api/v1.0/tours', methods=['GET'])
 def get_tours():
     """Return a list of possible tours that the user may want to do in Switzerland based on his query"""
@@ -61,7 +66,7 @@ def get_tours():
     #queries =request.form.getlist('query')
     #print(queries)
     #query_language = request.args.get('max_travel_time') #could be detected
-    
+
     #Some calls
     pred = predict(query)
     cities_importance = { i:j for (i,j) in pred if j>0}
@@ -80,7 +85,7 @@ def get_tours():
 @app.route('/api/v1.0/tours_test', methods=['GET'])
 def get_tours_test():
     """Return a list of possible tours that the user may want to do in Switzerland based on his query
-    
+
     Return : {
         cities_importance : {city_1:importance, city_2: importance, city_n: importance}
         tour : [city_start, city_2, ..., city_end]
@@ -91,10 +96,10 @@ def get_tours_test():
     max_travel_time = request.args.get('max_travel_time')
     query = request.args.get('query')
     #query_language = request.args.get('max_travel_time') #could be detected
-    
+
     #Some calls
     pred = predict(query)
-    
+
     return str([(i,j) for (i,j) in pred if j>0])
 
 if __name__ == '__main__':
