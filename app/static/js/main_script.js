@@ -86,13 +86,24 @@ function getTrain_Path(trainline) {
 d3.csv('static/datasets/train_route.csv', loadTrainPath);
 
 function draw_path(path) {
-  n = path.length
   let i = 0
-  while(i < n-1) {
+  myLines = [];
+  while(i < path.length-1) {
+    //draw_point(path[i])
     create_line(path[i], path[i+1])
     i = i + 1
   }
+  //draw_point(path[path.length-1])
   update_graph()
+}
+
+function draw_point(city) {
+    var circle = L.circle([city.long, city.lat], {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.7,
+        radius: 50
+    }).addTo(mymap);
 }
 
 function find_by_name(city, name) {
@@ -149,12 +160,27 @@ var myLines = [{'coordinates': [[6.39970400408, 46.4757395273],
 */
 
 var myStyle = {
-    "color": "red",
+    "color": "#ed5565",
     "weight": 5,
-    "opacity": 1
+    "opacity": 0.7
 };
 
+function clearMap(m) {
+    for(i in m._layers) {
+        if(m._layers[i]._path != undefined) {
+            try {
+                m.removeLayer(m._layers[i]);
+            }
+            catch(e) {
+                console.log("problem with " + e + m._layers[i]);
+            }
+        }
+    }
+}
+
+
 function update_graph() {
+  clearMap(mymap);
   L.geoJSON(myLines, {
       style: myStyle
   }).addTo(mymap);
@@ -183,6 +209,7 @@ $('#left_panel_form').on( "submit", function( event ) {
     $.get(TOUR_API_URL + params, function(json) {
         console.log(json);
         alert("Success");
+        draw_path(json.tour);
     });
 });
 
