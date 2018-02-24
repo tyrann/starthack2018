@@ -69,7 +69,8 @@ let cities = [
   new city('Val-de-Travers', 46.911697, 6.610216),
   new city('Wil', 47.4757171459,	9.0517500503),
   new city('Yverdon-les-bains', 46.781524, 6.40753),
-  new city('Meyrin', 46.22561, 6.077305)
+  new city('Meyrin', 46.22561, 6.077305),
+  new city('Basel', 47.547667, 7.589539)
 ]
 
 let train_path_data;
@@ -86,13 +87,32 @@ function getTrain_Path(trainline) {
 d3.csv('static/datasets/train_route.csv', loadTrainPath);
 
 function draw_path(path) {
-  n = path.length
-  let i = 0
-  while(i < n-1) {
-    create_line(path[i], path[i+1])
-    i = i + 1
+  let i = 0;
+  clearMap(mymap);
+
+  while(i < path.length-1) {
+    draw_marker(get_city_by_name(path[i]));
+    create_line(path[i], path[i+1]);
+    i = i + 1;
   }
-  update_graph()
+  draw_marker(get_city_by_name(path[path.length-1]));
+  update_graph();
+}
+
+function draw_point(city) {
+    var circle = L.circle([city.lat, city.long], {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.7,
+        radius: 500,
+    }).addTo(mymap);
+}
+
+function draw_marker(city) {
+    let marker = L.marker([city.lat, city.long]);
+    mymap.addLayer(marker);
+    marker.bindPopup(city.name);
+    myMarkers.push(marker);
 }
 
 function find_by_name(city, name) {
@@ -105,7 +125,8 @@ function get_city_by_name(name) {
   return cities.find(x => find_by_name(x, name));
 }
 
-var myLines = []
+let myLines = [];
+let myMarkers = [];
 
 function create_line(city_name_1, city_name_2) {
   city1 = get_city_by_name(city_name_1);
@@ -116,43 +137,30 @@ function create_line(city_name_1, city_name_2) {
   });
 }
 
-/*
-var myLines = [{'coordinates': [[6.39970400408, 46.4757395273],
-   [6.42713908598, 46.4751599503]],
-  'type': 'LineString'},
- {'coordinates': [[6.54050855527, 46.5291203863],
-   [6.5417981566, 46.5307409033]],
-  'type': 'LineString'},
- {'coordinates': [[6.5417981566, 46.5307409033],
-   [6.5508823384, 46.5347796473]],
-  'type': 'LineString'},
- {'coordinates': [[6.42713908598, 46.4751599503],
-   [6.45590462293, 46.4823041329]],
-  'type': 'LineString'},
- {'coordinates': [[6.42713908598, 46.4751599503],
-   [6.45590462293, 46.4823041329]],
-  'type': 'LineString'},
- {'coordinates': [[6.11552023469, 46.2087560586],
-   [6.12772692721, 46.2055517047]],
-  'type': 'LineString'},
- {'coordinates': [[6.11552023469, 46.2087560586],
-   [6.12772692721, 46.2055517047]],
-  'type': 'LineString'},
- {'coordinates': [[6.14455938175, 46.222435146],
-   [6.14733924476, 46.2423769792]],
-  'type': 'LineString'},
- {'coordinates': [[6.52102415523, 46.5236117496],
-   [6.52434058739, 46.5247990334]],
-  'type': 'LineString'}
-]
-;
-*/
-
 var myStyle = {
-    "color": "red",
+    "color": "#ed5565",
     "weight": 5,
-    "opacity": 1
+    "opacity": 0.7
 };
+
+function clearMap(m) {
+    myLines = [];
+    for(i in m._layers) {
+        if(m._layers[i]._path != undefined) {
+            try {
+                m.removeLayer(m._layers[i]);
+            }
+            catch(e) {
+                console.log("problem with " + e + m._layers[i]);
+            }
+        }
+    }
+
+    myMarkers.forEach(function (m) {
+        mymap.removeLayer(m);
+    });
+}
+
 
 function update_graph() {
   L.geoJSON(myLines, {
@@ -170,7 +178,10 @@ $("#duration_slider").ionRangeSlider({
         "4d", "5d", "6d",
         "7d", "8d", "9d",
         "10d", "11d", "12d"
-    ]
+    ],
+    onChange: function (data) {
+        $('#left_panel_form').submit();
+    },
 });
 
 // Form submission
@@ -182,7 +193,7 @@ $('#left_panel_form').on( "submit", function( event ) {
 
     $.get(TOUR_API_URL + params, function(json) {
         console.log(json);
-        alert("Success");
+        draw_path(json.tour);
     });
 });
 
@@ -243,3 +254,10 @@ city_names = [
     'Meyrin',
 ].sort();
 d3.selectAll('.city_select').selectAll('option').data(city_names).enter().append('option').text(function (d) { return d; });
+
+const submitButton = d3.select('#submit_button');
+
+// Submit automatically for each form change
+d3.selectAll("select").on("change", function () {
+    $('#left_panel_form').submit();
+});

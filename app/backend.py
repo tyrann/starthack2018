@@ -41,7 +41,7 @@ def query_augmentation(queries):
         aug.append('innovation')
         aug.append('CERN')
         aug.append('physics')
-    if 'economie' in queries:
+    if 'economics' in queries:
         aug.append('finance')
         aug.append('business')
     if 'clubbing' in queries:
@@ -57,7 +57,11 @@ def query_augmentation(queries):
         aug.append('festivals')
     if 'sport' in queries:
         aug.append('sport')
-
+    if 'wildlife' in queries:
+        aug.append('nature')
+        aug.append('parks')
+        aug.append('forest')
+        
     return aug
 
 def train_tf_idf():
