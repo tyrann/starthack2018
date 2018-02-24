@@ -35,7 +35,7 @@ def predict(query):
     vals = cosine_similarity(X,Y).flatten()
     np.argsort(vals)
     indexes = np.argsort(vals)[-10:][::-1]
-    return labels[indexes]
+    return zip(labels[indexes], vals[indexes])
 
 @app.route('/api/v1.0/tours', methods=['GET'])
 def get_tours():
@@ -48,8 +48,28 @@ def get_tours():
     
     #Some calls
     pred = predict(query)
+    
+    return str([(i,j) for (i,j) in pred if j>0])
 
-    return str(pred)
+@app.route('/api/v1.0/tours_test', methods=['GET'])
+def get_tours_test():
+    """Return a list of possible tours that the user may want to do in Switzerland based on his query
+    
+    Return : {
+        selected_cities : {city_1:importance, city_2: importance, city_n: importance}
+        tour : [city_start, city_2, ..., city_end]
+    }
+    """
+    city_from = request.args.get('city_from')
+    city_to = request.args.get('city_to')
+    max_travel_time = request.args.get('max_travel_time')
+    query = request.args.get('query')
+    #query_language = request.args.get('max_travel_time') #could be detected
+    
+    #Some calls
+    pred = predict(query)
+    
+    return str([(i,j) for (i,j) in pred if j>0])
 
 if __name__ == '__main__':
     train_tf_idf()
