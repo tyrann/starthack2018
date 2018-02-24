@@ -37,6 +37,12 @@ def predict(query):
     indexes = np.argsort(vals)[-10:][::-1]
     return zip(labels[indexes], vals[indexes])
 
+def construct_grah():
+    return G 
+
+def find_path(G, city_start, city_end, city_impotrance):
+    return path
+
 @app.route('/api/v1.0/tours', methods=['GET'])
 def get_tours():
     """Return a list of possible tours that the user may want to do in Switzerland based on his query"""
@@ -48,15 +54,18 @@ def get_tours():
     
     #Some calls
     pred = predict(query)
-    
-    return str([(i,j) for (i,j) in pred if j>0])
+    res = {
+        'cities_importance': { i:j for (i,j) in pred if j>0}, #return the importance of each city (No limits)
+        'tour': []
+    }
+    return jsonify(res)
 
 @app.route('/api/v1.0/tours_test', methods=['GET'])
 def get_tours_test():
     """Return a list of possible tours that the user may want to do in Switzerland based on his query
     
     Return : {
-        selected_cities : {city_1:importance, city_2: importance, city_n: importance}
+        cities_importance : {city_1:importance, city_2: importance, city_n: importance}
         tour : [city_start, city_2, ..., city_end]
     }
     """
