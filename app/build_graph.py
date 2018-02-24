@@ -52,7 +52,7 @@ def build_graph(cities_score):
     pairs = list(combinations(cities,2))
 
     G.add_nodes_from(cities_score)
-    
+
     for item in pairs:
         print("Adding edges " + '<->'.join(item))
         G.add_edge(item[0],item[1], distance=get_distance(item))
@@ -103,7 +103,7 @@ def update_score_with_closeness(G, cities_score):
         closeness = nx.closeness_centrality(G,item[0],distance=distance)
         item[1]['score'] *= closeness
         city[1]['score'] *= closeness
-         
+
     pass
 
 
@@ -116,12 +116,12 @@ def get_path(cities_score, threshold, source, destination):
     #Build the distance graph
     G = build_graph(cities_score)
     save_obj(distance_dic,"distance_map")
-    
+
     run = True
     #force first iteration of algo
     threshold = 3*3600*threshold
     duration = threshold + 1
-    
+
     #We cannot remove the source from the list of visiting node
     whitelist = []
     whitelist.append(source)
@@ -147,7 +147,7 @@ def get_path(cities_score, threshold, source, destination):
                 G.remove_node(item[0])
                 break
     total_score = sum(city[1]['score'] for city in cities_score_normal if city[0] in visited)
-        
+
     visited.append(destination)
     print("Path is " + str(visited) + " with a score of " + str(total_score))
 
