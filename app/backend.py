@@ -121,7 +121,8 @@ def get_tours():
         cities_importance[city_from] = 0
 
     #Remove city end from the traveling cities
-    cities_importance.pop(city_to, None)
+    if(city_to != city_from)
+        cities_importance.pop(city_to, None)
     
     #cities_score=[('Lausanne',{'score':14}),('Genève',{'score':5}),('Zurich',{'score':13}),('Lucerne',{'score':19}),('Locarno',{'score':19}),('Montreux',{'score':12})]
     cities_score = [(k, {'score': cities_importance[k]}) for  k in cities_importance.keys()]
