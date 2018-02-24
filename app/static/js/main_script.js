@@ -177,7 +177,10 @@ $("#duration_slider").ionRangeSlider({
         "4d", "5d", "6d",
         "7d", "8d", "9d",
         "10d", "11d", "12d"
-    ]
+    ],
+    onChange: function (data) {
+        $('#left_panel_form').submit();
+    },
 });
 
 // Form submission
@@ -189,7 +192,6 @@ $('#left_panel_form').on( "submit", function( event ) {
 
     $.get(TOUR_API_URL + params, function(json) {
         console.log(json);
-        alert("Success");
         draw_path(json.tour);
     });
 });
@@ -251,3 +253,10 @@ city_names = [
     'Meyrin',
 ].sort();
 d3.selectAll('.city_select').selectAll('option').data(city_names).enter().append('option').text(function (d) { return d; });
+
+const submitButton = d3.select('#submit_button');
+
+// Submit automatically for each form change
+d3.selectAll("select").on("change", function () {
+    $('#left_panel_form').submit();
+});
