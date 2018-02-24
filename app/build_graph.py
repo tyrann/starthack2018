@@ -62,8 +62,7 @@ def get_closest_city(cities_dict, visited):
 
 def nearest_neighbors(source,G):
     #returns nearest neighbors approximation and total duration of such path
-
-    sum_duration = 0
+sum_duration = 0
     run = True
     visited = []
     visited.append(source)
@@ -101,8 +100,8 @@ def get_path(cities_score, threshold, source, destination):
     
     run = True
     #force first iteration of algo
+    threshold = 3*3600*threshold
     duration = threshold + 1
-
     
     #We cannot remove the source from the list of visiting node
     whitelist = []
@@ -130,6 +129,7 @@ def get_path(cities_score, threshold, source, destination):
                 break
     total_score = sum(city[1]['score'] for city in cities_score_normal if city[0] in visited)
         
-
+    visited.append(destination)
     print("Path is " + str(visited) + " with a score of " + str(total_score))
+
     return (visited,score)
