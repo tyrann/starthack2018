@@ -85,6 +85,16 @@ function getTrain_Path(trainline) {
 
 d3.csv('static/datasets/train_route.csv', loadTrainPath);
 
+function draw_path(path) {
+  n = path.length
+  let i = 0
+  while(i < n-1) {
+    create_line(path[i], path[i+1])
+    i = i + 1
+  }
+  update_graph()
+}
+
 function find_by_name(city, name) {
     if (city.name == name) {
       return city
