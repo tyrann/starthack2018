@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from sbb_api import _api_request_from_to
 import pickle
 
-cities_score=[('Lausanne',{'score':4}),('Genève',{'score':5}),('Zurich',{'score':13}),('Lucerne',{'score':19})]
+cities_score=[('Lausanne',{'score':14}),('Genève',{'score':5}),('Zurich',{'score':13}),('Lucerne',{'score':19}),('Locarno',{'score':19}),('Montreux',{'score':3})]
 
 distance='distance'
 score='score'
@@ -36,8 +36,8 @@ def build_graph(cities_score):
     return G
 
 def draw_graph(G):
-    node_lab=nx.get_node_attributes(G,score)
-    pos=nx.circular_layout(G)
+    node_lab = nx.get_node_attributes(G,score)
+    pos = nx.circular_layout(G)
     nx.draw(G,pos,labels=node_lab)
     labels = nx.get_edge_attributes(G,distance)
     nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
@@ -51,16 +51,79 @@ def load_obj(name ):
     with open('obj/' + name + '.pkl', 'rb') as f:
         return pickle.load(f)
 
-def main():
-    #Load the dic for distances
-    global distance_dic
-    distance_dic = load_obj("distance_map")
-    #Build the distance graph
-    G=build_graph(cities_score)
-    save_obj(distance_dic,"distance_map")
+def get_closest_city(cities_dict, visited):
+    for city in cities_dict:
+        if city[0] not in visited:
+            visited.append(city[0])
+            return city
+
+def nearest_neighbors(source,G):
+    #returns nearest neighbors approximation and total duration of such path
+
+    sum_duration = 0
+    run = True
+    visited = []
+    visited.append(source)
 
     #Run nearest neighbors
+    while(run):
 
+        source_node = get_closest_city(sorted(G[source].items(), key=lambda x: x[1]['distance']), visited)
+        if(source_node != None):
+            sum_duration += source_node[1]['distance']
+        else:
+            run = False
+    return (visited, sum_duration)
+
+def get_path(cities_score, threshold):
+    #Load the dic for distances
+    global distance_dic
+    cities=[item[0] for item in cities_score]
+    distance_dic = load_obj("distance_map")
+    #Build the distance graph
+    G = build_graph(cities_score)
+    save_obj(distance_dic,"distance_map")
+    
+    run = True
+    #force first iteration of algo
+    duration = threshold + 1
+
+    source= 'Genève'
+    destination = 'Zurich'
+    
+    #We cannot remove the source from the list of visiting node
+    whitelist = []
+    whitelist.append(source)
+    whitelist.append(destination)
+
+    while(duration > threshold):
+        #try and remove the least interesting city from the graph
+        (visited, dur) = nearest_neighbors(source,G)
+        duration = dur
+
+        if(duration <= threshold):
+            break
+
+        print("duration is " + str(duration))
+
+        #modify the graph by removeing the city with the lowest score
+        sorted_cities = (sorted(cities_score, key=lambda x: x[1]['score']))
+        for item in sorted_cities:
+            if item[0] not in whitelist:
+                print("Removing city " + item[0] + " from graph")
+                cities_score.remove(item)
+                G.remove_node(item[0])
+                break
+    total_score = 0
+    for item in cities_score:
+        total_score += item[1]['score']
+
+    print("Path is " + str(visited) + " with a score of " + str(total_score))
+    return (visited,score)
+        
+
+def main():
+    get_path(cities_score, 40000)
 
 if __name__ == "__main__":
     main()
