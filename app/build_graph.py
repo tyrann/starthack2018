@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import networkx as nx
 from itertools import combinations
-import matplotlib.pyplot as plt
 from sbb_api import _api_request_from_to
 import pickle
 import copy
@@ -66,13 +65,13 @@ def build_graph(cities_score):
         G.add_edge(item[0],item[1], distance=get_distance(item))
     return G
 
-def draw_graph(G):
-    node_lab = nx.get_node_attributes(G,score)
-    pos = nx.circular_layout(G)
-    nx.draw(G,pos,labels=node_lab)
-    labels = nx.get_edge_attributes(G,distance)
-    nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
-    plt.show()
+#def draw_graph(G):
+#    node_lab = nx.get_node_attributes(G,score)
+#    pos = nx.circular_layout(G)
+#    nx.draw(G,pos,labels=node_lab)
+#    labels = nx.get_edge_attributes(G,distance)
+#    nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
+#    plt.show()
 
 def save_obj(obj, name):
     with open('obj/'+ name + '.pkl', 'wb') as f:
