@@ -235,7 +235,7 @@ city_names = [
     'Arolla',
     'Arosa',
     'Bienne',
-    'Sion',
+    'Sion, Switzerland',
     'Altdorf (UR)',
     'Delemont',
     'Frauenfeld',
