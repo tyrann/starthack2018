@@ -162,4 +162,4 @@ def get_tours_test():
 if __name__ == '__main__':
     train_tf_idf()
     port = int(os.environ.get("PORT", 5000))
-    app.run(port=port)
+    app.run(host='0.0.0.0', port=port)
