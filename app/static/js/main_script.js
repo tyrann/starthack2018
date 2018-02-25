@@ -183,7 +183,7 @@ $("#duration_slider").ionRangeSlider({
 });
 
 // Form submission
-const TOUR_API_URL = 'http://127.0.0.1:5000/api/v1.0/tours?'
+const TOUR_API_URL = 'http://0.0.0.0:5000/api/v1.0/tours?'
 
 $('#left_panel_form').on( "submit", function( event ) {
     event.preventDefault();
