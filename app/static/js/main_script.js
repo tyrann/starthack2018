@@ -250,6 +250,7 @@ city_names = [
     'Wil',
     'Yverdon-les-bains',
     'Meyrin',
+    'Basel',
 ].sort();
 d3.selectAll('.city_select').selectAll('option').data(city_names).enter().append('option').text(function (d) { return d; });
 
