@@ -66,7 +66,8 @@ def query_augmentation(queries):
 
 def train_tf_idf():
     global X, vectorizer, transformer, labels
-    cities_info = pickle.load(open("cities_description.p", "rb"))
+    #cities_info = pickle.load(open(os.path.join(os.path.dirname(sys.argv[0]), "cities_description.p"), "rb"))
+    cities_info = pickle.load(open("app/cities_description.p", "rb"))
     labels = np.array(list(cities_info.keys()))
     corpus = np.array(list(cities_info.values()))
 
@@ -161,4 +162,4 @@ def get_tours_test():
 if __name__ == '__main__':
     train_tf_idf()
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(port=port)
