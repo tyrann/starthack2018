@@ -84,8 +84,6 @@ function getTrain_Path(trainline) {
   return train_path.geoshape
 }
 
-d3.csv('static/datasets/train_route.csv', loadTrainPath);
-
 function draw_path(path) {
   let i = 0;
   clearMap(mymap);
